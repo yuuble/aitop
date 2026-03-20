@@ -1,5 +1,5 @@
 {
-  "name": "aitop",
+  "name": "@yuuble/aitop",
   "version": "0.1.0",
   "description": "htop for AI agents — find and manage all AI coding assistants running on your machine. Spot zombie sessions, kill runaways, reclaim memory.",
   "type": "module",

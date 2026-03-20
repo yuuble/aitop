@@ -230,7 +230,8 @@ function collectContainers() {
     const containers = []
     const aiImagePatterns = [
       /claude/i, /anthropic/i, /openai/i, /ollama/i,
-      /agent/i, /copilot/i, /cursor/i, /ai[-_]?worker/i,
+      /copilot/i, /cursor/i, /ai[-_]?worker/i,
+      /\bai[-_]agent/i, /\bagentic/i, /langchain/i, /autogen/i, /crewai/i,
     ]
     for (const line of out.trim().split('\n')) {
       if (!line) continue

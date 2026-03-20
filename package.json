@@ -1,0 +1,40 @@
+{
+  "name": "aitop",
+  "version": "0.1.0",
+  "description": "htop for AI agents — find and manage all AI coding assistants running on your machine. Spot zombie sessions, kill runaways, reclaim memory.",
+  "type": "module",
+  "bin": {
+    "aitop": "./src/cli.js"
+  },
+  "keywords": [
+    "ai", "monitor", "htop", "top", "process", "claude", "cursor", "copilot",
+    "aider", "cody", "windsurf", "ollama", "agents", "zombie", "devops", "cli",
+    "coding-assistant", "ai-agent", "process-monitor", "developer-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuuble/aitop.git"
+  },
+  "homepage": "https://github.com/yuuble/aitop",
+  "bugs": {
+    "url": "https://github.com/yuuble/aitop/issues"
+  },
+  "author": "yuuble (https://yuuble.com)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "os": ["linux", "darwin"],
+  "files": [
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test src/test.js"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0"
+  }
+}

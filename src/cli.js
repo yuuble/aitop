@@ -24,7 +24,7 @@ if (args.includes('--help') || args.includes('-h')) {
     -w, --watch           live mode (like htop)
     --interval=N          refresh interval in seconds (default: 5)
     --json                output as JSON
-    --no-docker           skip Docker container scan
+    --docker              also scan Docker containers for AI workloads
     --verbose             show child processes too
 
   ${chalk.bold('Detected AI tools:')}
@@ -49,7 +49,7 @@ if (args.includes('--version') || args.includes('-v')) {
 
 const watchMode = args.includes('--watch') || args.includes('-w')
 const jsonMode = args.includes('--json')
-const noDocker = args.includes('--no-docker')
+const withDocker = args.includes('--docker')
 const verbose = args.includes('--verbose')
 const interval = parseInt(args.find(a => a.startsWith('--interval='))?.split('=')[1] || '5', 10)
 
@@ -66,7 +66,7 @@ if (killIdx !== -1 && args[killIdx + 1]) {
 
 // Main
 async function run() {
-  const data = scan({ docker: !noDocker, verbose })
+  const data = scan({ docker: withDocker, verbose })
 
   if (jsonMode) {
     console.log(JSON.stringify(data, null, 2))
@@ -76,9 +76,23 @@ async function run() {
 }
 
 if (watchMode) {
+  // Use alternate screen buffer (like htop) — no flicker
+  process.stdout.write('\x1B[?1049h') // enter alternate screen
+  process.stdout.write('\x1B[?25l')   // hide cursor
+
+  const cleanup = () => {
+    process.stdout.write('\x1B[?25h')   // show cursor
+    process.stdout.write('\x1B[?1049l') // leave alternate screen
+    process.exit(0)
+  }
+  process.on('SIGINT', cleanup)
+  process.on('SIGTERM', cleanup)
+
   const loop = async () => {
-    process.stdout.write('\x1B[2J\x1B[H')
+    process.stdout.write('\x1B[H') // move cursor to top-left (no clear — overwrites in place)
     await run()
+    // Clear any leftover lines below current content
+    process.stdout.write('\x1B[J')
     setTimeout(loop, interval * 1000)
   }
   loop()
